@@ -1,0 +1,63 @@
+Image.java
+package com.gpcoder.patterns.structural.proxy.virtual;
+ 
+public interface Image {
+ 
+    void showImage();
+ 
+}
+RealImage.java
+package com.gpcoder.patterns.structural.proxy.virtual;
+ 
+public class RealImage implements Image {
+    private String url;
+ 
+    public RealImage(String url) {
+        this.url = url;
+        System.out.println("Image loaded: " + this.url);
+    }
+ 
+    @Override
+    public void showImage() {
+        System.out.println("Image showed: " + this.url);
+    }
+}
+ProxyImage.java
+package com.gpcoder.patterns.structural.proxy.virtual;
+ 
+public class ProxyImage implements Image {
+    private Image realImage;
+    private String url;
+ 
+    public ProxyImage(String url) {
+        this.url = url;
+        System.out.println("Image unloaded: " + this.url);
+    }
+ 
+    @Override
+    public void showImage() {
+        if (realImage == null) {
+            realImage = new RealImage(this.url);
+        } else {
+            System.out.println("Image already existed: " + this.url);
+        }
+        realImage.showImage();
+    }
+}
+Client.java
+package com.gpcoder.patterns.structural.proxy.virtual;
+ 
+public class Client {
+    public static void main(String[] args) {
+        System.out.println("Init proxy image: ");
+        ProxyImage proxyImage = new ProxyImage("https://gpcoder.com/favicon.ico");
+         
+        System.out.println("---");
+        System.out.println("Call real service 1st: ");
+        proxyImage.showImage();
+         
+        System.out.println("---");
+        System.out.println("Call real service 2nd: ");
+        proxyImage.showImage();
+    }
+}
