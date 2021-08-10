@@ -1,0 +1,45 @@
+
+public interface Bank {
+    String getBankName();
+}
+
+package com.patterns.factorymethod; 
+public class TPBank implements Bank { 
+    @Override
+    public String getBankName() {
+        return "TPBank";
+    } 
+}
+package com.patterns.factorymethod; 
+public class VietcomBank implements Bank { 
+    @Override
+    public String getBankName() {
+        return "VietcomBank";
+    } 
+}
+
+public class BankFactory { 
+    private BankFactory() {
+    } 
+    public static final Bank getBank(BankType bankType) {
+        switch (bankType) {
+        case TPBANK:
+            return new TPBank(); 
+        case VIETCOMBANK:
+            return new VietcomBank(); 
+        default:
+            throw new IllegalArgumentException("This bank type is unsupported");
+        }
+    } 
+}
+
+public enum BankType { 
+    VIETCOMBANK, TPBANK; 
+}
+Client:
+public class Client { 
+    public static void main(String[] args) {
+        Bank bank = BankFactory.getBank(BankType.TPBANK);
+        System.out.println(bank.getBankName()); // TPBank
+    }
+}
